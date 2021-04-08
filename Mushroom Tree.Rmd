@@ -1,0 +1,44 @@
+---
+title: "Mushroom Rules"
+author: "Caroline Bower"
+date: "4/7/2021"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r Alexandria}
+mushrooms <- read.csv("mushrooms.csv", stringsAsFactors = TRUE)
+mushrooms$veil_type <- NULL
+
+RNGversion("3.5.2"); set.seed(123)
+
+library("OneR")
+library("RWeka")
+```
+
+```{r Commandment Tablets}
+train_sample <- sample(1000, 900)
+
+# from seed pull random lines from file
+train_sample <- sample(8124, 7311)
+
+# create train and test sets
+mush_tr <- credit[train_sample, ]
+mush_te <- credit[-train_sample, ]
+
+mushroom_1R <- OneR(type ~ ., data = mush_tr)
+mushroom_1R
+```
+
+```{r model}
+mushroom_1R_pred <- predict(mushroom_1R, mush_te)
+table(actual = mushrooms$type, predicted = mushroom_1R_pred)
+```
+
+```{r Day Tripper}
+mushroom_JRip <- JRip(type ~ ., data = mush_tr)
+mushroom_JRip_pred <- predict(mushroom_JRip, mush_te)
+```
